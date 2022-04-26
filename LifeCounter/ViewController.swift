@@ -44,9 +44,14 @@ class ViewController: UIViewController {
         }
     }
     
+    // returns true if game has not ended
+    func gameNotEnd() -> Bool {
+        return score1 > 0 && score2 > 0
+    }
+    
     // player 1 "+" button
     @IBAction func btnIncOne1(_ sender: UIButton) {
-        if (score1 > 0) {
+        if (gameNotEnd()) {
             score1 += 1
             updateScoreLabel1()
             updateEndLabel1()
@@ -55,7 +60,7 @@ class ViewController: UIViewController {
     
     // player 1 "-" button
     @IBAction func btnDecOne1(_ sender: UIButton) {
-        if (score1 > 0) {
+        if (gameNotEnd()) {
             score1 -= 1
             updateScoreLabel1()
             updateEndLabel1()
@@ -64,7 +69,7 @@ class ViewController: UIViewController {
     
     // player 1 "+5" button
     @IBAction func btnIncFive1(_ sender: UIButton) {
-        if (score1 > 0) {
+        if (gameNotEnd()) {
             score1 += 5
             updateScoreLabel1()
             updateEndLabel1()
@@ -73,7 +78,7 @@ class ViewController: UIViewController {
     
     // player 1 "-5" button
     @IBAction func btnDecFive1(_ sender: UIButton) {
-        if (score1 > 0) {
+        if (gameNotEnd()) {
             score1 -= 5
             updateScoreLabel1()
             updateEndLabel1()
@@ -82,7 +87,7 @@ class ViewController: UIViewController {
     
     // player 2 "+" button
     @IBAction func btnIncOne2(_ sender: UIButton) {
-        if (score2 > 0) {
+        if (gameNotEnd()) {
             score2 += 1
             updateScoreLabel2()
             updateEndLabel2()
@@ -91,7 +96,7 @@ class ViewController: UIViewController {
     
     // player 2 "-" button
     @IBAction func btnDecOne2(_ sender: UIButton) {
-        if (score2 > 0) {
+        if (gameNotEnd()) {
             score2 -= 1
             updateScoreLabel2()
             updateEndLabel2()
@@ -100,7 +105,7 @@ class ViewController: UIViewController {
     
     // player 2 "+5" button
     @IBAction func btnIncFive2(_ sender: UIButton) {
-        if (score2 > 0) {
+        if (gameNotEnd()) {
             score2 += 5
             updateScoreLabel2()
             updateEndLabel2()
@@ -109,7 +114,7 @@ class ViewController: UIViewController {
     
     // player 2 "-5" button
     @IBAction func btnDecFive2(_ sender: UIButton) {
-        if (score2 > 0) {
+        if (gameNotEnd()) {
             score2 -= 5
             updateScoreLabel2()
             updateEndLabel2()
