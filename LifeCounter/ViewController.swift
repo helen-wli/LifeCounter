@@ -8,130 +8,170 @@
 import UIKit
 
 class ViewController: UIViewController {
-    // score tracking for the 2 players
-    var score1 = 20
-    var score2 = 20
     
-    // score labels for the 2 players
-    @IBOutlet weak var scoreLabel1: UILabel!
-    @IBOutlet weak var scoreLabel2: UILabel!
+    @IBOutlet weak var btnAddPlayer: UIButton!
+    @IBOutlet weak var btnHistory: UIButton!
     
-    // game ending labels for the 2 players
-    @IBOutlet weak var endLabel1: UILabel!
-    @IBOutlet weak var endLabel2: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     
-    // update the score label for player 1
-    func updateScoreLabel1() {
-        scoreLabel1.text = "\(score1)"
+    @IBOutlet weak var gameOverLabel: UILabel!
+    @IBOutlet weak var btnOk: UIButton!
+    @IBOutlet weak var btnReset: UIButton!
+    
+    var allPlayers: [Player] = []
+    
+    var history: [String] = []
+    
+    // returns true if game over, false otherwise
+    func overallGameOver() -> Bool {
+        var numLost = 0
+        for player in allPlayers {
+            if player.gameOver() {
+                numLost += 1
+            }
+        }
+        return allPlayers.count - numLost <= 1
     }
     
-    // update the score label for player 2
-    func updateScoreLabel2() {
-        scoreLabel2.text = "\(score2)"
+    // returns true if game started, false otherwise
+    func overallGameStarted() -> Bool {
+        var flag = false
+        for player in allPlayers {
+            if player.score != 20 {
+                flag = true
+            }
+        }
+        return flag
     }
     
-    // if score1 <= 0, display label indicating that player 1 loses
-    func updateEndLabel1() {
-        if (score1 <= 0) {
-            endLabel1.isHidden = false
+    func setAddPlayerBtn() {
+        if overallGameStarted() && !overallGameOver() {
+            btnAddPlayer.isEnabled = false
+        } else {
+            btnAddPlayer.isEnabled = true
         }
     }
     
-    // if score2 <= 0, display label indicating that player 2 loses
-    func updateEndLabel2() {
-        if (score2 <= 0) {
-            endLabel2.isHidden = false
+    func displayGameOver() {
+        if overallGameOver() {
+            gameOverLabel.isHidden = false
+            btnOk.isHidden = false
+            btnReset.isHidden = true
         }
     }
     
-    // returns true if game has not ended
-    func gameNotEnd() -> Bool {
-        return score1 > 0 && score2 > 0
-    }
-    
-    // player 1 "+" button
-    @IBAction func btnIncOne1(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score1 += 1
-            updateScoreLabel1()
-            updateEndLabel1()
+    @IBAction func btnAddPlayerClicked(_ sender: Any) {
+        if allPlayers.count < 8 {
+            allPlayers.append(Player())
+            tableView.reloadData()
         }
     }
     
-    // player 1 "-" button
-    @IBAction func btnDecOne1(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score1 -= 1
-            updateScoreLabel1()
-            updateEndLabel1()
+    @IBAction func btnHistoryClicked(_ sender: Any) {
+        performSegue(withIdentifier: "ShowHistory", sender: self)
+    }
+    
+    func reset() {
+        allPlayers = [Player(), Player(), Player(), Player()]
+        history = []
+        
+        tableView.reloadData()
+    }
+    
+    @IBAction func btnOkClicked(_ sender: Any) {
+        reset()
+        gameOverLabel.isHidden = true
+        btnOk.isHidden = true
+        btnAddPlayer.isEnabled = true
+    }
+    
+    @IBAction func btnResetClicked(_ sender: Any) {
+        reset()
+        btnAddPlayer.isEnabled = true
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowHistory" {
+            if let hisVC = segue.destination as? HistoryViewController {
+                hisVC.historyRecord = "\(history)"
+            }
         }
     }
     
-    // player 1 "+5" button
-    @IBAction func btnIncFive1(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score1 += 5
-            updateScoreLabel1()
-            updateEndLabel1()
-        }
-    }
-    
-    // player 1 "-5" button
-    @IBAction func btnDecFive1(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score1 -= 5
-            updateScoreLabel1()
-            updateEndLabel1()
-        }
-    }
-    
-    // player 2 "+" button
-    @IBAction func btnIncOne2(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score2 += 1
-            updateScoreLabel2()
-            updateEndLabel2()
-        }
-    }
-    
-    // player 2 "-" button
-    @IBAction func btnDecOne2(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score2 -= 1
-            updateScoreLabel2()
-            updateEndLabel2()
-        }
-    }
-    
-    // player 2 "+5" button
-    @IBAction func btnIncFive2(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score2 += 5
-            updateScoreLabel2()
-            updateEndLabel2()
-        }
-    }
-    
-    // player 2 "-5" button
-    @IBAction func btnDecFive2(_ sender: UIButton) {
-        if (gameNotEnd()) {
-            score2 -= 5
-            updateScoreLabel2()
-            updateEndLabel2()
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        endLabel1.text = "Player 1 LOSES!"
-        endLabel1.isHidden = true
+        btnHistory.setTitle("History", for: .normal)
+        btnAddPlayer.setTitle("Add Player", for: .normal)
         
-        endLabel2.text = "Player 2 LOSES!"
-        endLabel2.isHidden = true
+        tableView.delegate = self
+        tableView.dataSource = self
         
-        updateScoreLabel1()
-        updateScoreLabel2()
+        for _ in 0...3 {
+            let newPlayer = Player()
+            allPlayers.append(newPlayer)
+        }
+        
+        gameOverLabel.text = "Game Over!"
+        gameOverLabel.isHidden = true
+        
+        btnOk.setTitle("OK", for: .normal)
+        btnOk.isHidden = true
+        
+        btnReset.setTitle("Reset", for: .normal)
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return nil
+    }
+}
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return allPlayers.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell {
+            cell.player = allPlayers[indexPath.section]
+            cell.configureCell()
+            cell.delegate = self
+            return cell
+        }
+        return UITableViewCell()
+    }
+}
+
+extension ViewController: TableViewCellProtocol {
+    func btnIncOneClicked(_ score: Int) {
+        displayGameOver()
+        setAddPlayerBtn()
+        history.append("+\(score)")
+    }
+    
+    func btnIncValClicked(_ score: Int) {
+        displayGameOver()
+        setAddPlayerBtn()
+        history.append("+\(score)")
+    }
+    
+    func btnDecOneClicked(_ score: Int) {
+        displayGameOver()
+        setAddPlayerBtn()
+        history.append("-\(score)")
+    }
+    
+    func btnDecValClicked(_ score: Int) {
+        displayGameOver()
+        setAddPlayerBtn()
+        history.append("-\(score)")
     }
 }
