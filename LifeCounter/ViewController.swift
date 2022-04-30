@@ -44,19 +44,22 @@ class ViewController: UIViewController {
         return flag
     }
     
-    func setAddPlayerBtn() {
-        if overallGameStarted() && !overallGameOver() {
-            btnAddPlayer.isEnabled = false
-        } else {
-            btnAddPlayer.isEnabled = true
-        }
-    }
-    
     func displayGameOver() {
         if overallGameOver() {
             gameOverLabel.isHidden = false
             btnOk.isHidden = false
             btnReset.isHidden = true
+            btnAddPlayer.isEnabled = false
+            
+            writeToHistory()
+        }
+    }
+    
+    func setAddPlayerBtn() {
+        if overallGameStarted() && !overallGameOver() {
+            btnAddPlayer.isEnabled = false
+        } else {
+            btnAddPlayer.isEnabled = true
         }
     }
     
@@ -73,8 +76,6 @@ class ViewController: UIViewController {
     
     func reset() {
         allPlayers = [Player(), Player(), Player(), Player()]
-        history = []
-        
         tableView.reloadData()
     }
     
@@ -83,13 +84,23 @@ class ViewController: UIViewController {
         gameOverLabel.isHidden = true
         btnOk.isHidden = true
         btnAddPlayer.isEnabled = true
+        btnReset.isHidden = false
     }
     
     @IBAction func btnResetClicked(_ sender: Any) {
         reset()
+        history = []
         btnAddPlayer.isEnabled = true
     }
     
+    func writeToHistory() {
+        let numUpTo = allPlayers.count - 1
+        for i in 0...numUpTo {
+            if allPlayers[i].gameOver() {
+                history.append("Player \(i + 1) lost one life.")
+            }
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowHistory" {
@@ -152,26 +163,22 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: TableViewCellProtocol {
     func btnIncOneClicked(_ score: Int) {
-        displayGameOver()
         setAddPlayerBtn()
-        history.append("+\(score)")
+        displayGameOver()
     }
     
     func btnIncValClicked(_ score: Int) {
-        displayGameOver()
         setAddPlayerBtn()
-        history.append("+\(score)")
+        displayGameOver()
     }
     
     func btnDecOneClicked(_ score: Int) {
-        displayGameOver()
         setAddPlayerBtn()
-        history.append("-\(score)")
+        displayGameOver()
     }
     
     func btnDecValClicked(_ score: Int) {
-        displayGameOver()
         setAddPlayerBtn()
-        history.append("-\(score)")
+        displayGameOver()
     }
 }

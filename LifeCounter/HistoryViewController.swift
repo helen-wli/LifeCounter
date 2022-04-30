@@ -10,7 +10,7 @@ import UIKit
 class HistoryViewController: UIViewController {
 
     @IBOutlet weak var btnDismiss: UIButton!
-    @IBOutlet weak var historyLabel: UILabel!
+    @IBOutlet weak var historyLabel: UITextView!
     
     var historyRecord = ""
     

@@ -208,26 +208,28 @@
                                     <action selector="btnDismissClicked:" destination="of2-DG-qKg" eventType="touchUpInside" id="Sud-S8-eze"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6Y-MG-cYz">
-                                <rect key="frame" x="20" y="145" width="374" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BuU-GP-3p0">
+                                <rect key="frame" x="20" y="145" width="374" height="647"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zgC-ec-bKM"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="G8u-qX-5II" firstAttribute="top" secondItem="zgC-ec-bKM" secondAttribute="top" constant="40" id="2M2-Vo-aAz"/>
-                            <constraint firstItem="N6Y-MG-cYz" firstAttribute="top" secondItem="G8u-qX-5II" secondAttribute="bottom" constant="30" id="42r-9T-hjY"/>
-                            <constraint firstItem="zgC-ec-bKM" firstAttribute="trailing" secondItem="N6Y-MG-cYz" secondAttribute="trailing" constant="20" id="Kbq-4A-muo"/>
+                            <constraint firstItem="BuU-GP-3p0" firstAttribute="top" secondItem="G8u-qX-5II" secondAttribute="bottom" constant="30" id="JQU-Zh-ZOv"/>
+                            <constraint firstItem="zgC-ec-bKM" firstAttribute="trailing" secondItem="BuU-GP-3p0" secondAttribute="trailing" constant="20" id="Kss-bv-RIt"/>
+                            <constraint firstItem="BuU-GP-3p0" firstAttribute="leading" secondItem="zgC-ec-bKM" secondAttribute="leading" constant="20" id="dc8-wq-hzJ"/>
+                            <constraint firstItem="zgC-ec-bKM" firstAttribute="bottom" secondItem="BuU-GP-3p0" secondAttribute="bottom" constant="50" id="i2N-n6-fvT"/>
                             <constraint firstItem="zgC-ec-bKM" firstAttribute="trailing" secondItem="G8u-qX-5II" secondAttribute="trailing" constant="20" id="jLb-d4-dvq"/>
-                            <constraint firstItem="N6Y-MG-cYz" firstAttribute="leading" secondItem="zgC-ec-bKM" secondAttribute="leading" constant="20" id="uBn-Dy-95I"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btnDismiss" destination="G8u-qX-5II" id="0WH-nn-E06"/>
-                        <outlet property="historyLabel" destination="N6Y-MG-cYz" id="CxO-co-bgE"/>
+                        <outlet property="historyLabel" destination="BuU-GP-3p0" id="8LS-rQ-2r1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EJA-mw-4l8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -236,6 +238,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
